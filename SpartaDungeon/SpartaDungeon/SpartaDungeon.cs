@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using System.Xml;
 using System.Runtime.InteropServices.ComTypes;
@@ -17,12 +17,16 @@ namespace SpartaDungeon
 
         static void ItemsDatabase()
         {
-            itemsInDatabase.Add(new ItemData(0, "수련자 갑옷      ", 0, 5, "수련에 도움을 주는 갑옷입니다.                    ", 1000, false));
-            itemsInDatabase.Add(new ItemData(1, "무쇠 갑옷        ", 0, 9, "무쇠로 만들어져 튼튼한 갑옷입니다.                ", 1500, true));
-            itemsInDatabase.Add(new ItemData(2, "스파르타의 갑옷  ", 0, 15, "스파르타의 전사들이 사용했다는 전설의 갑옷입니다. ", 3500, false));
-            itemsInDatabase.Add(new ItemData(3, "낡은 검          ", 2, 0, "쉽게 볼 수 있는 낡은 검 입니다.                   ", 600, true));
-            itemsInDatabase.Add(new ItemData(4, "청동 도끼        ", 5, 0, "어디선가 사용됐던거 같은 도끼입니다.              ", 1500, false));
-            itemsInDatabase.Add(new ItemData(5, "스파르타의 창    ", 7, 0, "스파르타의 전사들이 사용했다는 전설의 창입니다.   ", 3500, true));
+            itemsInDatabase.Add(new ItemData(0, " 수련자 갑옷      ", 0, 5, 0, "수련에 도움을 주는 갑옷입니다.                    ", 1000, false));
+            itemsInDatabase.Add(new ItemData(1, " 무쇠 갑옷        ", 0, 9, 0, "무쇠로 만들어져 튼튼한 갑옷입니다.                ", 1500, true));
+            itemsInDatabase.Add(new ItemData(2, " 스파르타의 갑옷  ", 0, 15, 0, "스파르타의 전사들이 사용했다는 전설의 갑옷입니다. ", 3500, false));
+            itemsInDatabase.Add(new ItemData(3, " 낡은 검          ", 2, 0, 0, "쉽게 볼 수 있는 낡은 검 입니다.                   ", 600, true));
+            itemsInDatabase.Add(new ItemData(4, " 청동 도끼        ", 5, 0, 0, "어디선가 사용됐던거 같은 도끼입니다.              ", 1500, false));
+            itemsInDatabase.Add(new ItemData(5, " 스파르타의 창    ", 7, 0, 0, "스파르타의 전사들이 사용했다는 전설의 창입니다.   ", 3500, true));
+            itemsInDatabase.Add(new ItemData(6, " 삼위일체(1단계)  ", 3, 3, 0, "공격과 방어를 갖췄지만 어딘가 부족한 장신구입니다.", 1300, false));
+            itemsInDatabase.Add(new ItemData(7, " 삼위일체(2단계)  ", 6, 6, 30, "공, 방, 체를 두루 갖춘 장신구입니다.              ", 3000, false));
+            itemsInDatabase.Add(new ItemData(8, " 삼위일체(진)     ", 30, 30, 300, "고대 전설속에서나 존재하던 장신구입니다.          ", 33333, false));
+            itemsInDatabase.Add(new ItemData(9, " 드워프의 투구    ", 0, 0, 100, "드워프들의 강한 체력의 원천이 되는 투구입니다.   ", 2000, true));
 
         }
         public class ItemData
@@ -31,17 +35,19 @@ namespace SpartaDungeon
             public string ItemName;
             public int ItemAtk;
             public int ItemDef;
+            public int ItemHp;
             public int ItemPrice;
             public string Description;
             public bool IsItemEquipped;
             public bool IsPlayerOwned;
 
-            public ItemData(int _itemId, string _itemName, int _itemAtk, int _itemDef, string _description, int _itemPrice, bool _isPlayerOwned)
+            public ItemData(int _itemId, string _itemName, int _itemAtk, int _itemDef, int _itemHp, string _description, int _itemPrice, bool _isPlayerOwned)
             {
                 ItemId = _itemId;
                 ItemName = _itemName;
                 ItemAtk = _itemAtk;
                 ItemDef = _itemDef;
+                ItemHp = _itemHp;
                 Description = _description;
                 ItemPrice = _itemPrice;
                 IsItemEquipped = false;
@@ -59,6 +65,7 @@ namespace SpartaDungeon
             public int Gold;
             public int BaseAtkValue;
             public int BaseDefValue;
+            public int BaseHpValue;
 
             public PlayerStat(string _name, string _playerClass, int _level, int _atkValue, int _defValue, int _hpValue, int _gold)
             {
@@ -72,6 +79,7 @@ namespace SpartaDungeon
 
                 BaseAtkValue = _atkValue;
                 BaseDefValue = _defValue;
+                BaseHpValue = _hpValue;
 
             }
         }
@@ -127,7 +135,7 @@ namespace SpartaDungeon
             Console.WriteLine();
             Console.WriteLine(" 상태 보기\n캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
-            Console.WriteLine($"   Lv. {playerStat.Level}");
+            Console.WriteLine($"   Lv. {playerStat.Level:D2}");
             Console.WriteLine($" {playerStat.Name} ( {playerStat.PlayerClass} )");
             Console.Write($" 공격력 : {playerStat.AtkValue} ");
             if (playerStat.AtkValue - playerStat.BaseAtkValue > 0)
@@ -139,7 +147,11 @@ namespace SpartaDungeon
             {
                 Console.Write($"(+{playerStat.DefValue - playerStat.BaseDefValue})");
             }
-            Console.Write($"\n 체  력 : {playerStat.HpValue}");
+            Console.Write($"\n 체  력 : {playerStat.HpValue} ");
+            if (playerStat.HpValue - playerStat.BaseHpValue > 0)
+            {
+                Console.Write($"(+{playerStat.HpValue - playerStat.BaseHpValue})");
+            }
             Console.WriteLine($"\n  Gold  : {playerStat.Gold} G");
             Console.WriteLine();
             Console.WriteLine(" 0 : 나가기");
@@ -162,15 +174,25 @@ namespace SpartaDungeon
         {
             int totalAtk = 0;
             int totalDef = 0;
+            int totalHp = 0;
 
             foreach (ItemData item in playerEquippedItems)
             {
                 totalAtk += item.ItemAtk;
                 totalDef += item.ItemDef;
+                totalHp += item.ItemHp;
             }
 
             playerStat.AtkValue = playerStat.BaseAtkValue + totalAtk;
             playerStat.DefValue = playerStat.BaseDefValue + totalDef;
+            playerStat.HpValue = playerStat.BaseHpValue + totalHp;
+        }
+
+        private static void HighlightedColor(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(text);
+            Console.ResetColor();
         }
 
 
@@ -193,10 +215,8 @@ namespace SpartaDungeon
                 }
 
                 ItemEquipped = item.IsItemEquipped ? "[E] " : "";
-                Console.Write($" - {i + 1} ");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($" {ItemEquipped}");
-                Console.ResetColor();
+                Console.Write($" - {i + 1:D2} ");
+                HighlightedColor($"{ItemEquipped}");
                 Console.Write($" {item.ItemName}");
                 DisplayAtkOrDef(item);
                 Console.WriteLine($" {item.Description} ");
@@ -245,7 +265,7 @@ namespace SpartaDungeon
 
                 ItemEquipped = item.IsItemEquipped ? "[E] " : "";
 
-                Console.Write($" - {i + 1} ");
+                Console.Write($" - {i + 1:D2} ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write($" {ItemEquipped}");
                 Console.ResetColor();
@@ -296,19 +316,31 @@ namespace SpartaDungeon
         {
             if (item.ItemAtk > 0 && item.ItemAtk < 10 && item.ItemDef == 0)
             {
-                Console.Write($" |  공격력 + {item.ItemAtk}  |");
+                Console.Write($" |   공격력 + {item.ItemAtk}   |");
             }
             else if (item.ItemAtk >= 10 && item.ItemDef == 0) // 공격력 10 이상일 경우 칸 안맞는거 개선
             {
-                Console.Write($" |  공격력 + {item.ItemAtk} |");
+                Console.Write($" |   공격력 + {item.ItemAtk}  |");
             }
             else if (item.ItemAtk == 0 && item.ItemDef > 0 && item.ItemDef < 10)
             {
-                Console.Write($" |  방어력 + {item.ItemDef}  |");
+                Console.Write($" |   방어력 + {item.ItemDef}   |");
             }
             else if (item.ItemAtk == 0 && item.ItemDef >= 10) // 방어력 10 이상일 경우 칸 안맞는거 개선
             {
-                Console.Write($" |  방어력 + {item.ItemDef} |");
+                Console.Write($" |   방어력 + {item.ItemDef}  |");
+            }
+            else if (item.ItemAtk > 0 && item.ItemDef > 0 && item.ItemAtk < 10 && item.ItemDef < 10)
+            {
+                Console.Write($" |  공+ {item.ItemAtk}, 방+ {item.ItemDef}  |");
+            }
+            else if ( item.ItemAtk >=10 && item.ItemDef >= 10)
+            {
+                Console.Write($" | 공+ {item.ItemAtk}, 방+ {item.ItemDef} |");
+            }
+            else if (item.ItemHp > 0 && item.ItemAtk == 0 && item.ItemDef == 0)
+            {
+                Console.Write($" |   체력 + {item.ItemHp}   | ");
             }
         }
 
@@ -331,13 +363,11 @@ namespace SpartaDungeon
                 Console.Write($" {item.Description} | ");
                 if (!item.IsPlayerOwned)
                 {
-                    Console.WriteLine($"{item.ItemPrice} G");
+                    Console.Write($"{item.ItemPrice} G \n");
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("구매완료 ");
-                    Console.ResetColor();
+                    HighlightedColor("구매완료 \n");
                 }
             }
             Console.WriteLine();
@@ -375,7 +405,7 @@ namespace SpartaDungeon
             {
                 ItemData item = itemsInDatabase[i];
 
-                Console.Write($" - {i + 1} ");
+                Console.Write($" - {i+1:D2} ");
                 Console.Write($"{item.ItemName}");
                 DisplayAtkOrDef(item);
                 Console.Write($" {item.Description} | ");
@@ -415,11 +445,37 @@ namespace SpartaDungeon
                 if (playerStat.Gold >= selectedShopItem.ItemPrice && selectedShopItem.IsPlayerOwned != true)
                 {
                     Console.Clear();
-                    Console.WriteLine(" 구매가 완료되었습니다.\n 잠시 후 아이템 구매창으로 되돌아갑니다.");
-                    playerStat.Gold -= selectedShopItem.ItemPrice;
-                    selectedShopItem.IsPlayerOwned = true;
-                    Thread.Sleep(3000);
-                    buyItems();
+                    Console.WriteLine("");
+                    Console.WriteLine($" 선택한 아이템: {selectedShopItem.ItemName}");
+                    Console.WriteLine($" 선택한 아이템의 성능");
+                    Console.WriteLine($" 공격력 : + {selectedShopItem.ItemAtk}");
+                    Console.WriteLine($" 방어력 : + {selectedShopItem.ItemDef}");
+                    Console.WriteLine($" 체  력 : + {selectedShopItem.ItemHp}");
+                    Console.WriteLine(" 정말로 구매하시겠습니까?\n 1. 구매\n 0. 취소");
+                    Console.Write(" >> ");
+                    string buyInput = Console.ReadLine();
+                    switch (buyInput)
+                    {
+                        case "1":
+                            Console.Clear();
+                            Console.WriteLine(" 구매가 완료되었습니다.\n 잠시 후 아이템 구매창으로 되돌아갑니다.");
+                            playerStat.Gold -= selectedShopItem.ItemPrice;
+                            selectedShopItem.IsPlayerOwned = true;
+                            Thread.Sleep(3000);
+                            buyItems();
+                            break;
+
+                        case "0":
+                            Console.Clear();
+                            Console.WriteLine(" 구매를 취소하셨습니다.\n 잠시 후 아이템 구매창으로 되돌아갑니다.");
+                            Thread.Sleep(3000);
+                            buyItems();
+                            break;
+
+                        default:
+                            AnyKey();
+                            break;
+                    }
                 }
                 if (selectedShopItem.IsPlayerOwned == true)
                 {
