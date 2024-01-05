@@ -266,9 +266,7 @@ namespace SpartaDungeon
                 ItemEquipped = item.IsItemEquipped ? "[E] " : "";
 
                 Console.Write($" - {i + 1:D2} ");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($" {ItemEquipped}");
-                Console.ResetColor();
+                HighlightedColor($"{ItemEquipped}");
                 Console.Write($" {item.ItemName}");
                 DisplayAtkOrDef(item);
                 Console.WriteLine($" {item.Description} ");
@@ -411,13 +409,11 @@ namespace SpartaDungeon
                 Console.Write($" {item.Description} | ");
                 if (!item.IsPlayerOwned)
                 {
-                    Console.WriteLine($"{item.ItemPrice} G");
+                    Console.Write($"{item.ItemPrice} G \n");
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("구매완료 ");
-                    Console.ResetColor();
+                    HighlightedColor("구매완료 \n");
                 }
             }
             Console.WriteLine();
